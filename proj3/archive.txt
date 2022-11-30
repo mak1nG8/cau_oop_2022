@@ -1,0 +1,23 @@
+inf_int operator*(const inf_int& n1, const inf_int& n2) {
+    inf_int sum;
+    int length = n1.length + 1;
+    for (int i = 0; i < n2.length; i++) {
+        char* tmp = new char[length + i + 1];
+        tmp[length + i] = 0;
+        std::fill(tmp, tmp + length + i, '0');
+        int carry = 0;
+        for (int j = 0; j < length; j++) {
+            int n1_digit = n1.length > j ? n1.digits[j] - '0' : 0;
+            int n2_digit = n2.digits[i] - '0';
+            tmp[j + i] = (n1_digit * n2_digit + carry) % 10 + '0';
+            carry = (n1_digit * n2_digit + carry) / 10;
+        }
+        std::reverse(tmp, tmp + length + i);
+        int idx = 0;
+        while (idx < length + i - 1 && tmp[idx] == '0') idx++;
+        sum = sum + inf_int(tmp + idx);
+        delete[] tmp;
+    }
+    sum.the_sign = (n1.the_sign == n2.the_sign);
+    return sum;
+}
