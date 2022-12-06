@@ -1,4 +1,5 @@
 import abc
+from user import UserDBImpl
 
 class RentDBInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
@@ -82,39 +83,6 @@ class MockRentDBImpl(RentDBInterface):
             "lender": Lender,
         }]
 
-class UserDBInterface(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def getInfo(self, id):
-        """
-        해당 id 를 가지는 유저 정보를 dict 형태로 반환합니다.
-            param
-                id 찾고자 하는 유저 id(PK)
-            return
-                유저 정보가 담긴 dictionary
-        """
-        raise NotImplemented
+if __name__ == "__main__":
+    userDB = UserDBImpl()
 
-    @abc.abstractmethod
-    def setPoint(self, id, newPoint):
-        """
-        해당 id 를 가지는 유저의 point 필드값을 newPoint로 수정합니다
-            param
-                id: 수정하고자 하는 유저의 id(PK)
-                newPoint: point의 수정값
-            return
-                True: 성공
-                False : 실패
-        """
-        raise NotImplemented
-
-class MockUserDBImpl(UserDBInterface):
-    def getInfo(self, id):
-        return {
-            "id": id,
-            "membership": "bronze",
-            "point": 10000,
-            "trade_cnt": 0
-        }
-
-    def setPoint(self, id, newPoint):
-        return True

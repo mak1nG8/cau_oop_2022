@@ -72,7 +72,11 @@ class UserDBInterface(metaclass=abc.ABCMeta):
         """
         raise NotImplemented
 
-class MockUserDBImpl(UserDBInterface):
+    @abc.abstractmethod
+    def increaseTradeCnt(self, id):
+        raise NotImplemented
+
+class UserDBImpl(UserDBInterface):
     def __init__(self):
         self.users = {}
         self.users['test'] = User('test')
@@ -102,21 +106,14 @@ class MockUserDBImpl(UserDBInterface):
             self.users[id].point = newPoint
             return True
         else:
-            # raise NotExistedIDError
-            return False
+            raise NotExistedIDError
 
     def getAllInfo(self):
         return list(self.users.values())
 
-
-if __name__ == "__main__":
-    userdb = MockUserDBImpl()
-    test = userdb.getInfo('test')
-    print(test)
-    userdb.addUser('abcd')
-    abcd = userdb.getInfo('abcd')
-    print(abcd)
-    print(userdb.getAllInfo())
-    for user in userdb.getAllInfo():
-        print(user)
-    
+    def increaseTradeCnt(self, id):
+        if id in self.users:
+            self.users[id].trade_cnt += 1
+            return True
+        else:
+            raise NotExistedIDError
